@@ -1,0 +1,96 @@
+:root {
+  --font-primary: black;
+  --font-secondary: rgba(128, 128, 128, 0.75);
+  --color-primary: #7b7dfd;
+  --color-secondary: black;
+  --color-background: rgb(245, 245, 245);
+  --color-foreground: white;
+}
+
+.front-card {
+  background-color: white;
+  border: 2px solid var(--color-primary);
+  border-radius: 2px;
+  color: black;
+  font-family: "Arial", sans-serif;
+  font-size: 20px;
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.front-card {
+  margin: 2rem;
+  margin-bottom: 1rem;
+}
+
+.back-card {
+  background-color: var(--color-background);
+  border: 0.2rem solid var(--color-primary);
+  border-radius: 0.5rem;
+  color: var(--font-primary);
+  font-family: "Arial", sans-serif;
+  margin: 1rem;
+  padding: 1rem;
+}
+
+.back-card ol {
+  counter-reset: list;
+  list-style: none;
+}
+
+.back-card li {
+  counter-increment: list;
+  position: relative;
+}
+
+.back-card li:before {
+  color: var(--font-secondary);
+  content: counter(list);
+  margin-right: 1rem;
+  position: absolute;
+  right: 100%;
+}
+
+.back-card b {
+  font-weight: bold;
+}
+
+.back-card .def-block {
+  background: var(--color-foreground);
+  border-radius: 0.5rem;
+  display: block;
+  margin: 0.2rem;
+  padding: 0.2rem;
+}
+
+.back-card .def-title {
+  display: block;
+  font-size: 2rem;
+  position: relative;
+}
+
+.back-card .def-title .def-pron {
+  color: var(--font-secondary);
+  display: inline-block;
+  font-size: 1rem;
+  margin: 0;
+}
+
+.back-card .def-kind {
+  font-size: 1.2rem;
+  font-style: italic;
+  font-weight: 500;
+}
+
+.back-card .def-ex {
+  color: var(--font-secondary);
+}
+
+.line-top {
+  border-radius: 0.5rem;
+  border-top: 0.2rem solid var(--color-primary);
+  margin-bottom: 1rem;
+  margin-top: 1rem;
+}
+/*# sourceMappingURL=styles.css.map */

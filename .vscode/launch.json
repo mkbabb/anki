@@ -1,0 +1,29 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Python: Current File with Directory",
+            "type": "python",
+            "request": "launch",
+            "program": "${file}",
+            "console": "integratedTerminal",
+            "env": {
+                "PYTHONPATH": "${workspaceRoot}"
+            },
+            "xdebugSettings": {
+                "max_data": -1
+            },
+            "env": {
+                "OXFORD_API_KEY": "d1ca142c3435960706f7e8d9ff6d52b6",
+                "OXFORD_API_ID": "a2ca75cd",
+            },
+            "args": [
+                "--input",
+                "data/mijn_words_part.txt",
+            ]
+        },
+    ]
+}
