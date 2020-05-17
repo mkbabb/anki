@@ -16,10 +16,8 @@
             "xdebugSettings": {
                 "max_data": -1
             },
-            "env": {
-                "OXFORD_API_KEY": "d1ca142c3435960706f7e8d9ff6d52b6",
-                "OXFORD_API_ID": "a2ca75cd",
-            },
+            "envFile": "${workspaceFolder}/.env",
+            "env": {},
             "args": [
                 "--input",
                 "data/mijn_words_part.txt",
