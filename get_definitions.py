@@ -11,6 +11,8 @@ import socket
 import urllib.request
 import argparse
 
+import time
+
 
 API_ID = os.environ.get("OXFORD_API_ID")
 API_KEY = os.environ.get("OXFORD_API_KEY")
@@ -36,42 +38,72 @@ def get_definition(word: str) -> Optional[dict]:
     return data
 
 
+def parse_oxford_json(word_list: list) -> Dict[str, Any]:
+    out_dict = {}
+
+    for word_obj in word_list:
+        results = word_obj["results"][0]
+        name = str(results["id"])
+
+        lexicalEntries = results["lexicalEntries"][0]
+        lexicalCategory = lexicalEntries["lexicalCategory"]
+
+        entries = lexicalEntries["entries"][0]
+
+        senses = entries["senses"][0]
+        definitions = senses.get("definitions", [])
+        examples = senses.get("examples")
+        synonyms = senses.get("synonyms")
+
+        s = f"{str(name).capitalize()} ({lexicalCategory['id']}) {';'.join(definitions)}"
+        out_dict[name] = s
+
+    return out_dict
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Queries the Oxford Dictionary API for either a list of words or a single word.")
     parser.add_argument("-i", "--input",
                         help="Input file path")
-    parser.add_argument("-o", "--output",
-                        help="Output file path, leave blank for auto generate", default="")
-    parser.add_argument("-s", "--single",
-                        help="Input a single word", default="")
     args = parser.parse_args()
 
-    out_path = ""
-    definitions = []
+    definitions: List[dict] = []
 
-    if (args.single != ''):
-        word = args.single
-        definitions.append(get_definition(word))
-    else:
-        filepath = args.input
+    filepath = args.input
+    dirpath, filename, ext = file_components(filepath)
 
-        if (args.output == ''):
-            dirpath, filename, ext = file_components(filepath)
-            out_path = os.path.join(dirpath, filename + "_OUT") + ".json"
-        else:
-            out_path = args.output
+    out_path = os.path.join(dirpath, filename + "_OUT")
+    out_json_path = out_path + ".json"
+    out_txt_path = out_path + ".txt"
 
+    out_exists = os.path.exists(out_json_path)
+
+    if (not os.path.exists(out_json_path)):
         with open(filepath, "r") as file:
             for line in file.readlines():
                 word = line.strip().lower()
                 definition = get_definition(word)
-                print(definition)
+
                 if (definition != None):
                     definitions.append(definition)
-                break
+                time.sleep(2)
+        json.dump(definitions, open(out_json_path, "w"))
+    else:
+        definitions = json.load(open(out_json_path, "r"))
 
-    json.dump(definitions, open(out_path, "w"))
+    with open(out_txt_path, "w") as out_file:
+        for n, word in enumerate(filepath.readlines()):
+            word = str(word).strip().lower()
+
+            if (word in definitions):
+                word = definitions[word]
+            else:
+                word = f"{word.capitalize()}"
+
+            word = f"{word}\n"
+
+            out_file.writelines(word)
 
 
 if __name__ == "__main__":
