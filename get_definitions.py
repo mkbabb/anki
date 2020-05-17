@@ -18,15 +18,22 @@ API_KEY = os.environ.get("OXFORD_API_KEY")
 LANG = "en-us"
 
 
-def get_definition(word: str) -> dict:
+def get_definition(word: str) -> Optional[dict]:
     url = f"https://od-api.oxforddictionaries.com:443/api/v2/entries/{LANG}/{word}"
-    data = urllib.request.urlopen(url).read().decode("utf-8")
-    # data = None
-    # try:
-    #     data = urllib.request.urlopen(url).read().decode("utf-8")
-    # except:
-    #     print(f"**Could not get definition for word: {word}")
-    # return data
+
+    data = None
+    try:
+        req = urllib.request.Request(
+            url,
+            headers={"app_id": API_ID,
+                     "app_key": API_KEY})
+
+        data = json.loads(urllib.request.urlopen(req).read().decode("utf-8"))
+    except Exception as e:
+        print(e)
+        print(f"**Could not get definition for word: {word}")
+
+    return data
 
 
 def main():
@@ -59,8 +66,10 @@ def main():
             for line in file.readlines():
                 word = line.strip().lower()
                 definition = get_definition(word)
+                print(definition)
                 if (definition != None):
                     definitions.append(definition)
+                break
 
     json.dump(definitions, open(out_path, "w"))
 
