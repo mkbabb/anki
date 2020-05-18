@@ -1,18 +1,11 @@
-import os
-import subprocess
-import sys
-from typing import *
-from utils import file_components, sanitize_string
-import json
-import pandas as pd
-import numpy as np
-import socket
-
-import urllib.request
 import argparse
-
+import json
+import os
 import time
+import urllib.request
+from typing import *
 
+from utils import file_components, sanitize_string
 
 API_ID = os.environ.get("OXFORD_API_ID")
 API_KEY = os.environ.get("OXFORD_API_KEY")
